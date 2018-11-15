@@ -4,10 +4,16 @@ public class Path
 {
   private String content;
 
-  private void validate(String name) throws DataFormatException
+  static public void validate(String name) throws DataFormatException
   {
     if(!name.matches("^((?!.*//.*)(?!.*/ .*)/([^\\\\(){}:*?<>|\"'])*)"))
       throw new DataFormatException();
+  }
+
+  public Path(String content) throws DataFormatException
+  {
+    validate(content);
+    this.content = content;
   }
 
   public String get() { return content; }
