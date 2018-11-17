@@ -12,13 +12,7 @@ public class IDirectory extends IFile implements Iterable<IFile>
 {
   private Vector<IFile> dir;
 
-  /**
-   * Create empty directory in given place.
-   * @param path path to directory
-   * @param name name of directory
-   * @throws DataFormatException when path is wrongly spelled
-   */
-  IDirectory(Path path, String name) throws DataFormatException, NoSuchFileException { super(path, name); }
+  protected IDirectory() throws DataFormatException { super(); dir = new Vector<>(); }
 
   /**
    * Create empty directory in given place.
@@ -26,7 +20,17 @@ public class IDirectory extends IFile implements Iterable<IFile>
    * @param name name of directory
    * @throws DataFormatException when path is wrongly spelled
    */
-  IDirectory(String path, String name) throws DataFormatException, NoSuchFileException { super(path, name); }
+  IDirectory(Path path, String name) throws DataFormatException, NoSuchFileException
+  { super(path, name); dir = new Vector<>(); }
+
+  /**
+   * Create empty directory in given place.
+   * @param path path to directory
+   * @param name name of directory
+   * @throws DataFormatException when path is wrongly spelled
+   */
+  IDirectory(String path, String name) throws DataFormatException, NoSuchFileException
+  { super(path, name); dir = new Vector<>(); }
 
   /**
    * Create directory in given place.
@@ -35,7 +39,8 @@ public class IDirectory extends IFile implements Iterable<IFile>
    * @param dir content of directory
    * @throws DataFormatException when path is wrongly spelled
    */
-  IDirectory(Path path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException { super(path, name); this.dir = dir; }
+  IDirectory(Path path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException
+  { super(path, name); this.dir = dir; }
 
   /**
    * Create directory in given place.
@@ -44,7 +49,8 @@ public class IDirectory extends IFile implements Iterable<IFile>
    * @param dir content of directory
    * @throws DataFormatException when path is wrongly spelled
    */
-  IDirectory(String path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException { super(path, name); this.dir = dir;}
+  IDirectory(String path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException
+  { super(path, name); this.dir = dir;}
 
   /**
    * Search for file or directory in this directory.
@@ -54,7 +60,7 @@ public class IDirectory extends IFile implements Iterable<IFile>
    */
   public IFile getItem(String name) throws NoSuchFileException
   {
-    for(IFile i : dir) if(i.getName().equals("name")) return i;
+    for(IFile i : dir) if(i.getName().equals(name)) return i;
     throw new NoSuchFileException(name);
   }
 
@@ -65,9 +71,10 @@ public class IDirectory extends IFile implements Iterable<IFile>
   public void addItem(IFile file) { dir.add(file); }
 
   /**
-   * Delete item from directory.
-   * @param name name of file or directory which we want to delete
-   * @throws NoSuchFileException when there is no such file in this directory
+   *
+   * @param name
+   * @return
+   * @throws NoSuchFileException
    */
   public void deleteItem(String name) throws NoSuchFileException { dir.remove(getItem(name)); }
 
@@ -77,7 +84,7 @@ public class IDirectory extends IFile implements Iterable<IFile>
   public void ls() { for (IFile i : dir) System.out.println(i.getName()); }
 
   /**
-   * List all items in all directory start from this directory.
+   * List all items in all directory start from this.
    */
   public void ls_r()
   {

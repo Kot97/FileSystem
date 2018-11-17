@@ -1,8 +1,11 @@
 package filesystem;
 
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 import java.util.zip.DataFormatException;
 
-public class Path
+public class Path implements Iterable<String>
 {
   private String content;
 
@@ -28,5 +31,25 @@ public class Path
   {
     validate(name);
     this.content = name;
+  }
+
+  //TODO : zrob Path iterable
+
+  @Override
+  public Iterator<String> iterator()
+  {
+    return null;
+  }
+
+  @Override
+  public void forEach(Consumer<? super String> action)
+  {
+
+  }
+
+  @Override
+  public Spliterator<String> spliterator()
+  {
+    return null;
   }
 }

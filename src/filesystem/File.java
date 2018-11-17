@@ -1,10 +1,11 @@
 package filesystem;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.NoSuchFileException;
 import java.util.function.Function;
 import java.util.zip.DataFormatException;
 
-public class File extends IFile
+public class File extends IFile implements Moveable, Renameable
 {
   private String content;
 
@@ -42,6 +43,8 @@ public class File extends IFile
   @Override
   public void recursiveTravel(Function function) { function.apply(this); }
 
+  //TODO : wszystko pod spodem
+
   @Override
   public long size()
   {
@@ -50,13 +53,19 @@ public class File extends IFile
   }
 
   @Override
-  public Directory actual()
+  public Boolean move(Path path) throws DataFormatException
   {
     return null;
   }
 
   @Override
-  public Directory parent()
+  public Boolean move(String path) throws DataFormatException
+  {
+    return null;
+  }
+
+  @Override
+  public Boolean rename(String name) throws DataFormatException, FileAlreadyExistsException
   {
     return null;
   }
