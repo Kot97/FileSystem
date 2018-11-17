@@ -1,6 +1,8 @@
 package filesystem;
 
+import java.nio.file.NoSuchFileException;
 import java.util.function.Function;
+import java.util.zip.DataFormatException;
 
 public interface Traverseable
 {
@@ -9,6 +11,6 @@ public interface Traverseable
    * @param function function to apply
    */
   void recursiveTravel(Function function);
-  Directory actual();
-  Directory parent();
+  IDirectory actual() throws DataFormatException, NoSuchFileException;
+  IDirectory parent() throws DataFormatException, NoSuchFileException;
 }
