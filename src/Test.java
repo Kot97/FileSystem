@@ -9,6 +9,8 @@ public class Test
   {
     try
     {
+      Directory d1 = new Directory("/", "user");
+      Directory d2 = new Directory("/user", "desktop");
       Path p = new Path("/user/desktop");
       System.out.println(Util.lastDir(p).getName());
     }
