@@ -1,5 +1,7 @@
 package filesystem;
 
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.NoSuchFileException;
 import java.util.zip.DataFormatException;
 
 public interface Moveable
@@ -10,7 +12,7 @@ public interface Moveable
    * @return true if moving is successful, false if not
    * @throws DataFormatException when path is wrongly spelled
    */
-  Boolean move(Path path) throws DataFormatException;
+  void move(Path path) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException;
 
   /**
    * Move file/directory to new location.
@@ -18,5 +20,5 @@ public interface Moveable
    * @return true if moving is successful, false if not
    * @throws DataFormatException when path is wrongly spelled
    */
-  Boolean move(String path) throws DataFormatException;
+  void move(String path) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException;
 }

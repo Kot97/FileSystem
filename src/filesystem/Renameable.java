@@ -1,6 +1,7 @@
 package filesystem;
 
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.NoSuchFileException;
 import java.util.zip.DataFormatException;
 
 public interface Renameable
@@ -11,5 +12,5 @@ public interface Renameable
    * @return true if renaming is successful, false if not
    * @throws DataFormatException when path is wrongly spelled
    */
-  Boolean rename(String name) throws DataFormatException, FileAlreadyExistsException;
+  void rename(String name) throws DataFormatException, FileAlreadyExistsException, NoSuchFileException;
 }
