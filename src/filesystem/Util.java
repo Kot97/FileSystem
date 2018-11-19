@@ -3,12 +3,11 @@ package filesystem;
 import javafx.util.Pair;
 
 import java.nio.file.NoSuchFileException;
-import java.util.EmptyStackException;
 import java.util.zip.DataFormatException;
 
 public class Util
 {
-  static Pair<String, String[]> _split(String path) //ERR : tu jest błąd,
+  static public Pair<String, String[]> split(String path) //ERR : tu jest błąd,
   {
     String[] temp = path.split("/");
     if(temp.length == 0) return new Pair<>(null, null);
@@ -18,14 +17,22 @@ public class Util
     for(int i = 1; i < temp.length; i++) ret[i-1] = temp[i];
     return new Pair<>(temp[temp.length-1], ret);
   }
-  static Pair<String, String[]> _split(Path path) { return _split(path.get()); }
+  static public Pair<String, String[]> split(Path path) { return split(path.get()); }
+
+  static public Path unsplit(Pair<String, String[]> path) throws DataFormatException //PERR
+  {
+    String res = "/";
+    for(String i : path.getValue()) res += (i + "/");
+    res+=path.getKey();
+    return new Path(res);
+  }
 
   static public IDirectory lastDir(String path) throws NoSuchFileException, DataFormatException
   {
     Path.validate(path);
 
     IDirectory prev = Root.getInstance();
-    String[] temp = _split(path).getValue();
+    String[] temp = split(path).getValue();
     if(temp == null) return prev;
 
     for(String i : temp)    //PERR : pierwszy element, jak jest z Rootem w path
@@ -73,7 +80,7 @@ public class Util
     IFile prev = Root.getInstance();
     IFile i;
 
-    Pair<String, String[]> _temp = _split(path);
+    Pair<String, String[]> _temp = split(path);
     String[] temp = _temp.getValue();
     String temp2 = _temp.getKey();
     if(temp == null) if(temp2 == "/") return true;
@@ -90,7 +97,7 @@ public class Util
       if(! (i instanceof IDirectory)) return false;
       prev = i;
     }
-    try { ((IDirectory)prev).getItem(_split(path).getKey()); }
+    try { ((IDirectory)prev).getItem(split(path).getKey()); }
     catch (NoSuchFileException e) { return false; }
 
     return true;
