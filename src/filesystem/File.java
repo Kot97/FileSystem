@@ -2,7 +2,7 @@ package filesystem;
 
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.NoSuchFileException;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.zip.DataFormatException;
 
 public class File extends IFile implements Moveable, Renameable
@@ -16,34 +16,30 @@ public class File extends IFile implements Moveable, Renameable
   {
     super(path, name);
     this.content = "";
-    (Util.lastDir(path)).addItem(this);
   }
 
   public File(String path, String name) throws DataFormatException, NoSuchFileException
   {
     super(path, name);
     this.content = "";
-    (Util.lastDir(path)).addItem(this);
   }
 
   public File(Path path, String name, String content) throws DataFormatException, NoSuchFileException
   {
     super(path, name);
     this.content = content;
-    (Util.lastDir(path)).addItem(this);
   }
 
   public File(String path, String name, String content) throws DataFormatException, NoSuchFileException
   {
     super(path, name);
     this.content = content;
-    (Util.lastDir(path)).addItem(this);
   }
 
   @Override
-  public void recursiveTravel(Function function) { function.apply(this); }
+  public void recursiveTravel(Consumer<IFile> function) { function.accept(this); }
 
-  //TODO : wszystko pod spodem
+  //TODO : size
 
   @Override
   public long size()
@@ -53,20 +49,20 @@ public class File extends IFile implements Moveable, Renameable
   }
 
   @Override
-  public Boolean move(Path path) throws DataFormatException
+  public void move(Path path) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   {
-    return null;
+    new ProxyMove(this).move(path);
   }
 
   @Override
-  public Boolean move(String path) throws DataFormatException
+  public void move(String path) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   {
-    return null;
+    move(new Path(path));
   }
 
   @Override
-  public Boolean rename(String name) throws DataFormatException, FileAlreadyExistsException
+  public void rename(String name) throws DataFormatException, FileAlreadyExistsException, NoSuchFileException
   {
-    return null;
+    new ProxyRename(this).rename(name);
   }
 }

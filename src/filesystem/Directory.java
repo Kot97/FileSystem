@@ -53,20 +53,20 @@ public class Directory extends IDirectory implements Moveable, Renameable
   }
 
   @Override
-  public Boolean move(Path path) throws DataFormatException
+  public void move(Path path) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   {
-    return null;
+    new ProxyMove(this).move(path);
   }
 
   @Override
-  public Boolean move(String path) throws DataFormatException
+  public void move(String path) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   {
-    return null;
+    move(new Path(path));
   }
 
   @Override
-  public Boolean rename(String name) throws DataFormatException, FileAlreadyExistsException
+  public void rename(String name) throws DataFormatException, FileAlreadyExistsException, NoSuchFileException
   {
-    return null;
+    new ProxyRename(this).rename(name);
   }
 }
