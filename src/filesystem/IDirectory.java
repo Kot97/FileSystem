@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Vector;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.zip.DataFormatException;
 
 public class IDirectory extends IFile implements Iterable<IFile>
@@ -118,7 +117,7 @@ public class IDirectory extends IFile implements Iterable<IFile>
    * Apply function on file or, if its called from directory, all files in all subdirectories.
    * @param function function to apply
    */
-  public void recursiveTravel(Function function) { for(IFile i : dir) i.recursiveTravel(function); }
+  public void recursiveTravel(Consumer<IFile> function) { for(IFile i : dir) i.recursiveTravel(function); }
 
   /**
    * Function to calculate size of directory.

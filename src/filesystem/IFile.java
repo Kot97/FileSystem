@@ -22,9 +22,13 @@ public abstract class IFile implements Traverseable
    */
   abstract long size();
 
+  /**
+   * Create Root directory.
+   * @throws DataFormatException never
+   */
   protected IFile() throws DataFormatException
   {
-    this.name = "";
+    this.name = "/";
     this.path = new Path("/");
   }
 
@@ -66,10 +70,10 @@ public abstract class IFile implements Traverseable
   public void recursiveTravel(Function function) { function.apply(this); }
 
   /**
-   * Directory in which there is this file.
-   * @return
-   * @throws DataFormatException
-   * @throws NoSuchFileException
+   * Actual directory.
+   * @return Directory in which there is this file
+   * @throws DataFormatException when called from Root
+   * @throws NoSuchFileException never
    */
   public IDirectory actual() throws DataFormatException, NoSuchFileException
   {
@@ -79,10 +83,10 @@ public abstract class IFile implements Traverseable
   }
 
   /**
-   * Directory in which there is actual directory.
-   * @return
-   * @throws DataFormatException
-   * @throws NoSuchFileException
+   * Parent directory.
+   * @return Directory in which there is actual directory
+   * @throws DataFormatException when called from Root and Root subdirectories
+   * @throws NoSuchFileException never
    */
   public IDirectory parent() throws DataFormatException, NoSuchFileException
   {
