@@ -1,5 +1,6 @@
 package filesystem;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.NoSuchFileException;
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -11,15 +12,17 @@ public class IDirectory extends IFile implements Iterable<IFile>
 {
   private Vector<IFile> dir;
 
-  protected IDirectory() throws DataFormatException { super(); dir = new Vector<>(); }
+  protected IDirectory() { super(); dir = new Vector<>(); }
 
   /**
    * Create empty directory in given place.
    * @param path path to directory
    * @param name name of directory
    * @throws DataFormatException when path is wrongly spelled
+   * @throws NoSuchFileException when path is incorrect in this file system
+   * @throws FileAlreadyExistsException when there is already file with this name in directory
    */
-  IDirectory(Path path, String name) throws DataFormatException, NoSuchFileException
+  IDirectory(Path path, String name) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   { super(path, name); dir = new Vector<>(); }
 
   /**
@@ -27,8 +30,10 @@ public class IDirectory extends IFile implements Iterable<IFile>
    * @param path path to directory
    * @param name name of directory
    * @throws DataFormatException when path is wrongly spelled
+   * @throws NoSuchFileException when path is incorrect in this file system
+   * @throws FileAlreadyExistsException when there is already file with this name in directory
    */
-  IDirectory(String path, String name) throws DataFormatException, NoSuchFileException
+  IDirectory(String path, String name) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   { super(path, name); dir = new Vector<>(); }
 
   /**
@@ -37,8 +42,10 @@ public class IDirectory extends IFile implements Iterable<IFile>
    * @param name name of directory
    * @param dir content of directory
    * @throws DataFormatException when path is wrongly spelled
+   * @throws NoSuchFileException when path is incorrect in this file system
+   * @throws FileAlreadyExistsException when there is already file with this name in directory
    */
-  IDirectory(Path path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException
+  IDirectory(Path path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   { super(path, name); this.dir = dir; }
 
   /**
@@ -47,8 +54,10 @@ public class IDirectory extends IFile implements Iterable<IFile>
    * @param name name of directory
    * @param dir content of directory
    * @throws DataFormatException when path is wrongly spelled
+   * @throws NoSuchFileException when path is incorrect in this file system
+   * @throws FileAlreadyExistsException when there is already file with this name in directory
    */
-  IDirectory(String path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException
+  IDirectory(String path, String name, Vector<IFile> dir) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   { super(path, name); this.dir = dir;}
 
   /**
@@ -66,8 +75,13 @@ public class IDirectory extends IFile implements Iterable<IFile>
   /**
    * Add item to directory.
    * @param file file which we add
+   * @throws FileAlreadyExistsException when there is already file with this name in directory
    */
-  public void addItem(IFile file) { dir.add(file); }
+  public void addItem(IFile file) throws FileAlreadyExistsException
+  {
+    if(dir.contains(file)) throw new FileAlreadyExistsException(file.name);
+    dir.add(file);
+  }
 
   /**
    *

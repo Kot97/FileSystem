@@ -1,6 +1,7 @@
 package filesystem;
 //TODO : javadoc for all
 
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.NoSuchFileException;
 import java.util.function.Function;
 import java.util.zip.DataFormatException;
@@ -26,10 +27,11 @@ public abstract class IFile implements Traverseable
    * Create Root directory.
    * @throws DataFormatException never
    */
-  protected IFile() throws DataFormatException
+  protected IFile()
   {
     this.name = "/";
-    this.path = new Path("/");
+    try { this.path = new Path("/");}
+    catch (DataFormatException e) {}
   }
 
   /**
@@ -38,7 +40,7 @@ public abstract class IFile implements Traverseable
    * @param name name of file
    * @throws DataFormatException when path is wrongly spelled
    */
-  IFile(Path path, String name) throws DataFormatException, NoSuchFileException
+  IFile(Path path, String name) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   {
     if(path.get() == "/") this.path = new Path( "/" + name);
     else this.path = new Path(path.get() + "/" + name);
@@ -54,7 +56,7 @@ public abstract class IFile implements Traverseable
    * @param name name of file
    * @throws DataFormatException when path is wrongly spelled
    */
-  IFile(String path, String name) throws DataFormatException, NoSuchFileException
+  IFile(String path, String name) throws DataFormatException, NoSuchFileException, FileAlreadyExistsException
   {
     if(path == "/") this.path = new Path( "/" + name);
     else this.path = new Path(path + "/" + name);
@@ -73,25 +75,24 @@ public abstract class IFile implements Traverseable
    * Actual directory.
    * @return Directory in which there is this file
    * @throws DataFormatException when called from Root
-   * @throws NoSuchFileException never
    */
-  public IDirectory actual() throws DataFormatException, NoSuchFileException
+  public IDirectory actual() throws DataFormatException
   {
     String path = this.path.get();
     Path temp = new Path(path.substring(0, path.length() - this.name.length()));  //PERR
-    return Util.lastDir(temp);
+    try { return Util.lastDir(temp); }
+    catch (NoSuchFileException e) { e.printStackTrace(); return null;}
   }
 
   /**
    * Parent directory.
    * @return Directory in which there is actual directory
    * @throws DataFormatException when called from Root and Root subdirectories
-   * @throws NoSuchFileException never
    */
-  public IDirectory parent() throws DataFormatException, NoSuchFileException
+  public IDirectory parent() throws DataFormatException
   {
     IDirectory temp = actual();
-    return temp.actual();     //PERR
+    return temp.actual();
   }
 
   //TODO : copy
