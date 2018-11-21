@@ -32,7 +32,6 @@ public class Test
       System.out.println("Documents content: ");
       documents.ls();
       System.out.println(" ");
-
     }
     catch (DataFormatException | NoSuchFileException | FileAlreadyExistsException e) { e.printStackTrace(); }
   }
